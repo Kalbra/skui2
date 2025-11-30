@@ -5,7 +5,7 @@
 #include <QMainWindow>
 
 #include "document.h"
-#include "viewport.h"
+#include "panel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -45,7 +45,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    Viewport *viewport;
+    Panel *panel;
 
     void loadInsertVisualMenu();
     void loadAlignTools();

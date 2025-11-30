@@ -10,17 +10,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    viewport = new Viewport(ui->centralwidget);
+    panel = new Panel(ui->centralwidget);
 
-    ui->centralwidget->layout()->addWidget(viewport);
+    ui->centralwidget->layout()->addWidget(panel);
 
-    focus_document = new Document(viewport);
+    focus_document = new Document(panel);
 
     loadInsertVisualMenu();
 
     loadAlignTools();
 
-    connect(this, &MainWindow::modeChanged, viewport, &Viewport::setMode);
+    connect(this, &MainWindow::modeChanged, panel, &Panel::setMode);
 }
 
 MainWindow::~MainWindow()
@@ -70,7 +70,7 @@ void MainWindow::loadAlignTools()
         align_button->setToolTip(align_tool.tool_tip);
 
         connect(align_button, &QPushButton::clicked, this, [this, align_tool] {
-            viewport->triggeredAlign(align_tool.direction);
+            panel->triggeredAlign(align_tool.direction);
         });
     }
 }

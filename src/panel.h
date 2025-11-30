@@ -1,5 +1,5 @@
-#ifndef VIEWPORT_H
-#define VIEWPORT_H
+#ifndef PANEL_H
+#define PANEL_H
 
 #include <QChildEvent>
 #include <QGuiApplication>
@@ -15,11 +15,11 @@ enum class AlignDirection { Top, Right, Bottom, Left, Horizontal, Vertical };
 
 const int MAX_MOUSE_WIGGLE_TOLERANCE = 5; // px of size
 
-class Viewport : public QWidget
+class Panel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Viewport(QWidget *parent = nullptr);
+    explicit Panel(QWidget *parent = nullptr);
 
 protected:
     void mousePressChanged(QMouseEvent *);
@@ -55,4 +55,4 @@ private:
     QRect calculateMinimumBoundingBox(const QList<Visual *> &);
 };
 
-#endif // VIEWPORT_H
+#endif // PANEL_H

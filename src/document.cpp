@@ -3,9 +3,9 @@
 #include "visuals/slider.h"
 #include "visuals/test.h"
 
-Document::Document(Viewport *viewport)
+Document::Document(Panel *panel)
 {
-    this->viewport = viewport;
+    this->panel = panel;
 }
 
 Document::~Document() {}
@@ -26,19 +26,19 @@ Visual *Document::createVisual(VisualType type)
     container.type = type;
 
     if (type == VisualType::Test) {
-        Test *test = new Test(viewport, visual_uid_count);
+        Test *test = new Test(panel, visual_uid_count);
         connect(test->resize_bounding_box,
                 &ResizeBoundingBox::changedDelta,
-                viewport,
-                &Viewport::changeGeometryForSelected);
+                panel,
+                &Panel::changeGeometryForSelected);
         container.ptr = test;
         visual_uid_count++;
     } else if (type == VisualType::Slider) {
-        Slider *slider = new Slider(viewport, visual_uid_count);
+        Slider *slider = new Slider(panel, visual_uid_count);
         connect(slider->resize_bounding_box,
                 &ResizeBoundingBox::changedDelta,
-                viewport,
-                &Viewport::changeGeometryForSelected);
+                panel,
+                &Panel::changeGeometryForSelected);
         container.ptr = slider;
         visual_uid_count++;
     } else {

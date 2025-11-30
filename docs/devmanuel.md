@@ -9,13 +9,13 @@ MainWindow *-- Document : Stores
 Document : QList~VisualContainer~ visuals
 Document : createVisual(VisualType) Visual
 
-MainWindow *-- Viewport : Shows / Handles
+MainWindow *-- Panel : Shows / Handles
 
-Viewport *-- Visual : Parent
+Panel *-- Visual : Parent
 Visual : ~slot~ changeGeometryByDelta(QPointF delta, ...)
 Visual : setGeometry(QRect)
 
-Viewport *-- ResizeBoundBox : Parent
+Panel *-- ResizeBoundBox : Parent
 ResizeBoundBox : setBoxGeometry(QRect)
 ResizeBoundBox : ~signal~ chagnedDelta(QPointF delta, ...) 
 

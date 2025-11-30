@@ -19,9 +19,9 @@ enum class DisplayMode { Run, Edit };
 
 enum class VisualType { Parent, Test, Slider };
 
-const QEvent::Type VIEWPORT_HANDLED_ON_EDIT_MODE[] = {QEvent::MouseButtonPress,
-                                                      QEvent::MouseButtonRelease,
-                                                      QEvent::MouseMove};
+const QEvent::Type PANEL_HANDLED_ON_EDIT_MODE[] = {QEvent::MouseButtonPress,
+                                                   QEvent::MouseButtonRelease,
+                                                   QEvent::MouseMove};
 
 struct VisualContainer
 {

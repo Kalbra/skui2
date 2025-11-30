@@ -16,9 +16,9 @@ By this you create *Logic Paths* from one *Node* to another. One of the easies e
 First you create two *Visual* *Nodes*. One Slider and One Progress Bar. By conecting the *Output* of the Slider *Node* and the *Input* of the Progress Bar *Node* you get a *Connection*.
 Every time you *Control* or in more non Skui words change the Slider, so will the Progress Bar.
 
-### Viewport
-The *Viewport* is the main panel to control. It is not used for linking your Nodes. You can use the *Node Editor* for that.
-The *Viewport* contains *Visuals* 
+### Panel
+The *Panel* is the main panel to control. It is not used for linking your Nodes. You can use the *Node Editor* for that.
+The *Panel* contains *Visuals* 
 
 ### Edit Mode
 Edit mode is the mode to change your *Visuals*. You can configure them as you like.

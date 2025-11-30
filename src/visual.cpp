@@ -3,13 +3,13 @@
 Q_DECLARE_LOGGING_CATEGORY(visual)
 Q_LOGGING_CATEGORY(visual, "VISUAL")
 
-Visual::Visual(QWidget *viewport, unsigned int uid)
-    : QWidget(viewport)
+Visual::Visual(QWidget *panel, unsigned int uid)
+    : QWidget(panel)
 {
     this->uid = uid;
     setMouseTracking(true);
 
-    resize_bounding_box = new ResizeBoundingBox(viewport);
+    resize_bounding_box = new ResizeBoundingBox(panel);
     //resize_bounding_box->show();
 
     setAttribute(Qt::WA_StyledBackground, true);
@@ -118,8 +118,8 @@ void Visual::logInitiation()
                          .arg(reinterpret_cast<quintptr>(this), QT_POINTER_SIZE * 2, 16, QChar('0'));
 }
 
-// In Edit Mode all events in VIEWPORT_HANDLED_ON_EDIT_MODE need to get handled by the Viewport
-// This could be a mouse event. The Viewports needs the mouse event to handle the draging or resizing
+// In Edit Mode all events in PANEL_HANDLED_ON_EDIT_MODE need to get handled by the Panel
+// This could be a mouse event. The Panels needs the mouse event to handle the draging or resizing
 // of the Visual. This only works if EVERY child widget ignores the given events.
 bool Visual::checkForParentHandling(QEvent *event)
 {
@@ -128,8 +128,8 @@ bool Visual::checkForParentHandling(QEvent *event)
         return QWidget::event(event);
     }
 
-    for (QEvent::Type viewport_handled : VIEWPORT_HANDLED_ON_EDIT_MODE) {
-        if (event->type() == viewport_handled) {
+    for (QEvent::Type panel_handled : PANEL_HANDLED_ON_EDIT_MODE) {
+        if (event->type() == panel_handled) {
             return false;
         }
     }

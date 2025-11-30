@@ -1,9 +1,9 @@
-#include "viewport.h"
+#include "panel.h"
 
-Q_DECLARE_LOGGING_CATEGORY(viewport)
-Q_LOGGING_CATEGORY(viewport, "VIEWPORT")
+Q_DECLARE_LOGGING_CATEGORY(panel)
+Q_LOGGING_CATEGORY(panel, "PANEL")
 
-Viewport::Viewport(QWidget *parent)
+Panel::Panel(QWidget *parent)
     : QWidget{parent}
 {
     setMouseTracking(true);
@@ -11,7 +11,7 @@ Viewport::Viewport(QWidget *parent)
     rubber_band = new QRubberBand(QRubberBand::Rectangle, this);
 }
 
-QList<Visual *> Viewport::visualChildIn(QRect rect)
+QList<Visual *> Panel::visualChildIn(QRect rect)
 {
     QList<Visual *> contained_visuals;
     foreach (Visual *visual, findChildren<Visual *>()) {
@@ -22,7 +22,7 @@ QList<Visual *> Viewport::visualChildIn(QRect rect)
     return contained_visuals;
 }
 
-Visual *Viewport::visualChildAt(QPoint point)
+Visual *Panel::visualChildAt(QPoint point)
 {
     QList<Visual *> visuals = findChildren<Visual *>();
     QMutableListIterator<Visual *> visual(visuals);
@@ -37,12 +37,12 @@ Visual *Viewport::visualChildAt(QPoint point)
     return top_level_visual;
 }
 
-void Viewport::setMode(DisplayMode display_mode)
+void Panel::setMode(DisplayMode display_mode)
 {
     this->display_mode = display_mode;
 }
 
-void Viewport::triggeredAlign(AlignDirection direction)
+void Panel::triggeredAlign(AlignDirection direction)
 {
     QRect bounding_box = calculateMinimumBoundingBox(selected_visuals);
 
@@ -51,7 +51,7 @@ void Viewport::triggeredAlign(AlignDirection direction)
     }
 }
 
-QRect Viewport::calculateMinimumBoundingBox(const QList<Visual *> &visuals)
+QRect Panel::calculateMinimumBoundingBox(const QList<Visual *> &visuals)
 {
     int top = INT_MAX;
     int left = INT_MAX;
@@ -70,7 +70,7 @@ QRect Viewport::calculateMinimumBoundingBox(const QList<Visual *> &visuals)
     return QRect(QPoint(left, top), QPoint(right, bottom));
 }
 
-void Viewport::alignVisualToBoundingBox(AlignDirection direction, Visual *target, QRect bounding_box)
+void Panel::alignVisualToBoundingBox(AlignDirection direction, Visual *target, QRect bounding_box)
 {
     QRect new_geometry = target->geometry();
 
@@ -94,14 +94,14 @@ void Viewport::alignVisualToBoundingBox(AlignDirection direction, Visual *target
     target->setGeometry(new_geometry);
 }
 
-void Viewport::select(Visual *visual)
+void Panel::select(Visual *visual)
 {
     visual->resize_bounding_box->show();
     selected_visuals.append(visual);
     qInfo() << QString("Select: IMPLEMENT NAME");
 }
 
-void Viewport::deselectAll()
+void Panel::deselectAll()
 {
     QMutableListIterator<Visual *> visual(selected_visuals);
     while (visual.hasNext()) {
@@ -111,7 +111,7 @@ void Viewport::deselectAll()
     }
 }
 
-void Viewport::selectSingle(QPoint positon)
+void Panel::selectSingle(QPoint positon)
 {
     Visual *top_level_visual = visualChildAt(positon);
     if (top_level_visual) {
@@ -122,7 +122,7 @@ void Viewport::selectSingle(QPoint positon)
     }
 }
 
-void Viewport::selectMultiple(QList<Visual *> found_visuals)
+void Panel::selectMultiple(QList<Visual *> found_visuals)
 {
     if (!found_visuals.isEmpty()) {
         foreach (Visual *visual, found_visuals) {
@@ -131,14 +131,14 @@ void Viewport::selectMultiple(QList<Visual *> found_visuals)
     }
 }
 
-void Viewport::changeGeometryForSelected(DragDirection active_direction, QPointF delta)
+void Panel::changeGeometryForSelected(DragDirection active_direction, QPointF delta)
 {
     foreach (Visual *visual, selected_visuals) {
         visual->changeGeometryByDelta(active_direction, delta);
     }
 }
 
-bool Viewport::inMouseWiggleTolerance(QSize size)
+bool Panel::inMouseWiggleTolerance(QSize size)
 {
     if (size.width() > MAX_MOUSE_WIGGLE_TOLERANCE || size.height() > MAX_MOUSE_WIGGLE_TOLERANCE) {
         return false;
@@ -151,7 +151,7 @@ bool Viewport::inMouseWiggleTolerance(QSize size)
 // The handling of the events is done by event(QEvent *)
 // It serves simular pourpouse to mousePressEvent(QMouseEvent *),
 // but includes Child events in Edit Mode.
-void Viewport::mousePressChanged(QMouseEvent *event)
+void Panel::mousePressChanged(QMouseEvent *event)
 {
     if (display_mode == DisplayMode::Edit) {
         origin = event->pos();
@@ -164,7 +164,7 @@ void Viewport::mousePressChanged(QMouseEvent *event)
 // The handling of the events is done by event(QEvent *)
 // It serves simular pourpouse to mouseMoveEvent(QMouseEvent *),
 // but includes Child events in Edit Mode.
-void Viewport::mousePositionChanged(QMouseEvent *event)
+void Panel::mousePositionChanged(QMouseEvent *event)
 {
     if (display_mode == DisplayMode::Edit) {
         rubber_band->setGeometry(QRect(origin, event->pos()).normalized());
@@ -175,7 +175,7 @@ void Viewport::mousePositionChanged(QMouseEvent *event)
 // The handling of the events is done by event(QEvent *)
 // It serves simular pourpouse to mouseReleaseEvent(QMouseEvent *),
 // but includes Child events in Edit Mode.
-void Viewport::mouseReleaseChanged(QMouseEvent *event)
+void Panel::mouseReleaseChanged(QMouseEvent *event)
 {
     if (display_mode == DisplayMode::Edit) {
         rubber_band->hide();
@@ -194,7 +194,7 @@ void Viewport::mouseReleaseChanged(QMouseEvent *event)
     }
 }
 
-bool Viewport::event(QEvent *event)
+bool Panel::event(QEvent *event)
 {
     switch (event->type()) {
     case QEvent::MouseMove:

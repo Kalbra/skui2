@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QObject>
 
-#include "viewport.h"
+#include "panel.h"
 #include "visual.h"
 #include "visuals/test.h"
 
@@ -15,7 +15,7 @@ class Document : QObject
     Q_OBJECT
 
 public:
-    Document(Viewport *);
+    Document(Panel *);
     ~Document();
 
     QJsonObject save();
@@ -30,7 +30,7 @@ private:
     QList<VisualContainer> visuals;
     QList<Outbound> outbounds;
 
-    Viewport *viewport;
+    Panel *panel;
 };
 
 #endif // DOCUMENT_H

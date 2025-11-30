@@ -20,7 +20,7 @@ qt_add_executable(skui2
     outbound.h outbound.cpp
     visuals/test.h visuals/test.cpp
     resizeboundingbox.h resizeboundingbox.cpp
-    viewport.h viewport.cpp
+    panel.h panel.cpp
     assets.qrc
     interfacehandler.h interfacehandler.cpp
     visuals/slider.h visuals/slider.cpp
