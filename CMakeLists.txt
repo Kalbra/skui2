@@ -8,8 +8,6 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
 qt_standard_project_setup()
 
-set(SOURCES)
-
 add_subdirectory(src/app)
 add_subdirectory(src/panel)
 add_subdirectory(src/nodeeditor)
