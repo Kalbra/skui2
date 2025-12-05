@@ -25,6 +25,8 @@ qt_add_executable(skui2
     skuievent.h
     skui.h skui.cpp
     node.h
+    nodeeditor_viewport.h nodeeditor_viewport.cpp
+    nodeeditor_scence.h nodeeditor_scence.cpp
 )
 
 target_link_libraries(skui2

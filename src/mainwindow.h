@@ -5,6 +5,7 @@
 #include <QMainWindow>
 
 #include "document.h"
+#include "nodeeditor_viewport.h"
 #include "panel.h"
 
 QT_BEGIN_NAMESPACE
