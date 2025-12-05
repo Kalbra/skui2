@@ -9,6 +9,6 @@ qt_add_executable(skui
 target_link_libraries(skui PRIVATE Qt6::Widgets)
 
 set_target_properties(skui PROPERTIES
-    WIN32_EXECUTABLE ON
+    WIN32_EXECUTABLE OFF
     MACOSX_BUNDLE ON
 )
