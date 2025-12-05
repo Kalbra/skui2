@@ -147,11 +147,7 @@ bool Panel::inMouseWiggleTolerance(QSize size)
     }
 }
 
-// Note: This is NOT the override method mousePressEvent(QMouseEvent *).
-// The handling of the events is done by event(QEvent *)
-// It serves simular pourpouse to mousePressEvent(QMouseEvent *),
-// but includes Child events in Edit Mode.
-void Panel::mousePressChanged(QMouseEvent *event)
+void Panel::mousePressEvent(QMouseEvent *event)
 {
     if (display_mode == DisplayMode::Edit) {
         origin = event->pos();
@@ -160,22 +156,15 @@ void Panel::mousePressChanged(QMouseEvent *event)
     }
 }
 
-// Note: This is NOT the override method mouseMoveEvent(QMouseEvent *).
-// The handling of the events is done by event(QEvent *)
-// It serves simular pourpouse to mouseMoveEvent(QMouseEvent *),
-// but includes Child events in Edit Mode.
-void Panel::mousePositionChanged(QMouseEvent *event)
+void Panel::mouseMoveEvent(QMouseEvent *event)
 {
+    qDebug() << origin;
     if (display_mode == DisplayMode::Edit) {
         rubber_band->setGeometry(QRect(origin, event->pos()).normalized());
     }
 }
 
-// Note: This is NOT the override method mouseReleaseEvent(QMouseEvent *).
-// The handling of the events is done by event(QEvent *)
-// It serves simular pourpouse to mouseReleaseEvent(QMouseEvent *),
-// but includes Child events in Edit Mode.
-void Panel::mouseReleaseChanged(QMouseEvent *event)
+void Panel::mouseReleaseEvent(QMouseEvent *event)
 {
     if (display_mode == DisplayMode::Edit) {
         rubber_band->hide();
@@ -191,22 +180,5 @@ void Panel::mouseReleaseChanged(QMouseEvent *event)
         } else { // selction via rubber band
             selectMultiple(found_visuals);
         }
-    }
-}
-
-bool Panel::event(QEvent *event)
-{
-    switch (event->type()) {
-    case QEvent::MouseMove:
-        mousePositionChanged(static_cast<QMouseEvent *>(event));
-        return true;
-    case QEvent::MouseButtonPress:
-        mousePressChanged(static_cast<QMouseEvent *>(event));
-        return true;
-    case QEvent::MouseButtonRelease:
-        mouseReleaseChanged(static_cast<QMouseEvent *>(event));
-        return true;
-    default:
-        return QWidget::event(event);
     }
 }

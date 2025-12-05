@@ -1,7 +1,6 @@
 #ifndef PANEL_H
 #define PANEL_H
 
-#include <QChildEvent>
 #include <QGuiApplication>
 #include <QLoggingCategory>
 #include <QMouseEvent>
@@ -21,11 +20,9 @@ public:
     explicit Panel(QWidget *parent = nullptr);
 
 protected:
-    void mousePressChanged(QMouseEvent *);
-    void mousePositionChanged(QMouseEvent *);
-    void mouseReleaseChanged(QMouseEvent *);
-
-    bool event(QEvent *) override;
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 
 public:
     void addVisual(Visual *);
