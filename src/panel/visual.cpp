@@ -10,7 +10,7 @@ Visual::Visual(QWidget *panel, unsigned int uid)
     setMouseTracking(true);
 
     resize_bounding_box = new ResizeBoundingBox(panel);
-    //resize_bounding_box->show();
+    resize_bounding_box->hide();
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet("background-color: lightblue; border: 1px solid blue;");
