@@ -37,6 +37,9 @@ public:
 
     Document *focus_document;
 
+protected:
+    bool event(QEvent *);
+
 signals:
     void modeChanged(DisplayMode);
 

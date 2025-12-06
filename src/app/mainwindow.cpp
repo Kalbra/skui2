@@ -91,3 +91,18 @@ void MainWindow::on_mode_changed_button_clicked()
     }
     emit modeChanged(focus_document->display_mode);
 }
+
+bool MainWindow::event(QEvent *event)
+{
+// Shot eixt option using Escape in Debug Mode
+#ifdef QT_DEBUG
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
+        if (key_event->key() == Qt::Key_Escape) {
+            QApplication::quit();
+            return true;
+        }
+    }
+#endif
+    return QMainWindow::event(event);
+}
