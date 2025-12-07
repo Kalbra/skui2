@@ -4,8 +4,11 @@
 #include <QJsonObject>
 #include <QObject>
 
+#include "node.h"
+#include "nodeeditor.h"
 #include "panel.h"
 #include "visual.h"
+#include "visuals/slider.h"
 #include "visuals/test.h"
 
 class Document : QObject
@@ -13,7 +16,7 @@ class Document : QObject
     Q_OBJECT
 
 public:
-    Document(QObject *, Panel *);
+    Document(QObject *, Panel *, NodeEditor *);
     ~Document();
 
     QJsonObject save();
@@ -28,6 +31,7 @@ private:
     QList<VisualContainer> visuals;
 
     Panel *m_panel;
+    NodeEditor *m_nodeeditor;
 };
 
 #endif // DOCUMENT_H
