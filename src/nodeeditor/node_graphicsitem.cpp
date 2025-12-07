@@ -1,10 +1,9 @@
 #include "node_graphicsitem.h"
 
-NodeGraphicsItem::NodeGraphicsItem(QGraphicsItem *parent)
+NodeGraphicsItem::NodeGraphicsItem(QGraphicsItem *parent, QString node_name)
     : QGraphicsItem{parent}
-{
-    m_node_name = "Test Object";
-}
+    , m_node_name(node_name)
+{}
 
 void NodeGraphicsItem::paint(QPainter *painter,
                              const QStyleOptionGraphicsItem *option,

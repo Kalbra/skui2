@@ -25,6 +25,7 @@ Visual *Document::createVisual(VisualType type)
 
     if (type == VisualType::Test) {
         Node *node = new Node(this);
+        node->setProperty("name", "Test");
         m_nodeeditor->addNode(node);
         Test *test = new Test(m_panel, visual_uid_count, node);
         connect(test->resize_bounding_box,
@@ -35,6 +36,7 @@ Visual *Document::createVisual(VisualType type)
         visual_uid_count++;
     } else if (type == VisualType::Slider) {
         Node *node = new Node(this);
+        node->setProperty("name", "Slider");
         m_nodeeditor->addNode(node);
         Slider *slider = new Slider(m_panel, visual_uid_count, node);
         connect(slider->resize_bounding_box,

@@ -15,7 +15,7 @@ const int FONT_SIZE = 20;
 class NodeGraphicsItem : public QGraphicsItem
 {
 public:
-    explicit NodeGraphicsItem(QGraphicsItem *parent = nullptr);
+    explicit NodeGraphicsItem(QGraphicsItem *parent = nullptr, QString node_name = "NO NAME");
 
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
     QRectF boundingRect() const override;

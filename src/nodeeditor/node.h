@@ -15,13 +15,15 @@ private:
     QString m_identifier;
 };
 
-class Node : QObject
+class Node : public QObject
 {
     Q_OBJECT
 
 public:
     explicit Node(QObject *parent)
         : QObject{parent} {};
+
+    Q_PROPERTY(QString name MEMBER m_name)
 
     void setOutputInterfaces(const QList<Interface> &output_interfaces)
     {
@@ -42,6 +44,8 @@ signals:
     void changedInterfaceValue(const Interface &);
 
 private:
+    QString m_name;
+
     QList<Interface> m_output_interfaces;
     QList<Interface> m_input_interfaces;
 };
