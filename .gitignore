@@ -79,3 +79,4 @@ CMakeLists.txt.user*
 build*/
 src/build*/
 .cache/
+NOTES.md
