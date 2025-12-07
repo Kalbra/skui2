@@ -13,7 +13,7 @@ class Document : QObject
     Q_OBJECT
 
 public:
-    Document(Panel *);
+    Document(QObject *, Panel *);
     ~Document();
 
     QJsonObject save();
@@ -27,7 +27,7 @@ private:
     unsigned int visual_uid_count = 0;
     QList<VisualContainer> visuals;
 
-    Panel *panel;
+    Panel *m_panel;
 };
 
 #endif // DOCUMENT_H

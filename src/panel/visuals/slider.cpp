@@ -1,7 +1,7 @@
 #include "slider.h"
 
-Slider::Slider(QWidget *parent, unsigned int uid)
-    : Visual(parent, uid)
+Slider::Slider(QWidget *parent, unsigned int uid, Node *node)
+    : Visual(parent, uid, node)
 {
     setGeometry(QRect(200, 200, 400, 100));
     setMinimumSize(QSize(400, 100));

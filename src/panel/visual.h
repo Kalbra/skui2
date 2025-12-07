@@ -12,6 +12,7 @@
 #include <QString>
 #include <QWidget>
 
+#include "node.h"
 #include "resizeboundingbox.h"
 
 enum class DisplayMode { Run, Edit };
@@ -33,7 +34,7 @@ class Visual : public QWidget
     Q_OBJECT
 
 public:
-    explicit Visual(QWidget *parent = nullptr, unsigned int uid = 0);
+    explicit Visual(QWidget *panel = nullptr, unsigned int uid = 0, Node *node = nullptr);
     virtual ~Visual() {};
 
     void remove();
@@ -57,7 +58,8 @@ protected:
     bool checkForParentHandling(QEvent *);
 
 private:
-    int uid;
+    int m_uid;
+    Node *m_node;
 
     void logInitiation();
 

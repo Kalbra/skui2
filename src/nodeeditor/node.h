@@ -20,7 +20,8 @@ class Node : QObject
     Q_OBJECT
 
 public:
-    Node() {};
+    explicit Node(QObject *parent)
+        : QObject{parent} {};
 
     void setOutputInterfaces(const QList<Interface> &output_interfaces)
     {

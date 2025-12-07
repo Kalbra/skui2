@@ -4,12 +4,13 @@
 #include <QLabel>
 
 #include "../visual.h"
+#include "node.h"
 
 class Test : public Visual
 {
     Q_OBJECT
 public:
-    explicit Test(QWidget *parent = nullptr, unsigned int uid = 0);
+    explicit Test(QWidget *panel = nullptr, unsigned int uid = 0, Node *node = nullptr);
 };
 
 #endif // TEST_H

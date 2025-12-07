@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tabWidget->addTab(nodeeditor_viewport, "Node Editor");
     ui->tabWidget->setCurrentWidget(nodeeditor_viewport);
 
-    focus_document = new Document(panel);
+    focus_document = new Document(this, panel);
 
     loadInsertVisualMenu();
 

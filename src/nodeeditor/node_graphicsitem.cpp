@@ -2,17 +2,28 @@
 
 NodeGraphicsItem::NodeGraphicsItem(QGraphicsItem *parent)
     : QGraphicsItem{parent}
-{}
+{
+    m_node_name = "Test Object";
+}
 
 void NodeGraphicsItem::paint(QPainter *painter,
                              const QStyleOptionGraphicsItem *option,
                              QWidget *widget)
 {
-    painter->setPen(QColorConstants::DarkRed);
-    painter->setFont(painter->font());
-    //painter->drawRect(0, 0, 200, 200);
-    painter->drawRect(0, 0, 100, 200);
-    painter->drawText(50, 50, "Hallo");
+    QPen pen(QColorConstants::DarkRed, BOX_WIDTH);
+    painter->setPen(pen);
+
+    QFont font = painter->font();
+    font.setBold(true);
+    font.setPixelSize(FONT_SIZE);
+    painter->setFont(font);
+    QRect node_name_bounding = QFontMetrics(font).boundingRect(m_node_name);
+
+    int rect_width = node_name_bounding.width() + BOX_WIDTH * 2 + BOX_MARGIN.right() * 2;
+    painter->drawRect(0, 0, rect_width, 200);
+    painter->drawText(BOX_MARGIN.left() + BOX_WIDTH,
+                      BOX_MARGIN.top() - node_name_bounding.y(),
+                      m_node_name);
 }
 
 QRectF NodeGraphicsItem::boundingRect() const

@@ -1,12 +1,13 @@
 #include "document.h"
 
+#include "node.h"
 #include "visuals/slider.h"
 #include "visuals/test.h"
 
-Document::Document(Panel *panel)
-{
-    this->panel = panel;
-}
+Document::Document(QObject *parent, Panel *panel)
+    : QObject{parent}
+    , m_panel(panel)
+{}
 
 Document::~Document() {}
 
@@ -26,18 +27,22 @@ Visual *Document::createVisual(VisualType type)
     container.type = type;
 
     if (type == VisualType::Test) {
-        Test *test = new Test(panel, visual_uid_count);
+        Node *node = new Node(this);
+
+        Test *test = new Test(m_panel, visual_uid_count, node);
         connect(test->resize_bounding_box,
                 &ResizeBoundingBox::changedDelta,
-                panel,
+                m_panel,
                 &Panel::changeGeometryForSelected);
         container.ptr = test;
         visual_uid_count++;
     } else if (type == VisualType::Slider) {
-        Slider *slider = new Slider(panel, visual_uid_count);
+        Node *node = new Node(this);
+
+        Slider *slider = new Slider(m_panel, visual_uid_count, node);
         connect(slider->resize_bounding_box,
                 &ResizeBoundingBox::changedDelta,
-                panel,
+                m_panel,
                 &Panel::changeGeometryForSelected);
         container.ptr = slider;
         visual_uid_count++;

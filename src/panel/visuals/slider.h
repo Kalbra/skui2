@@ -4,12 +4,13 @@
 #include <QSlider>
 
 #include "../visual.h"
+#include "node.h"
 
 class Slider : public Visual
 {
     Q_OBJECT
 public:
-    explicit Slider(QWidget *parent = nullptr, unsigned int uid = 0);
+    explicit Slider(QWidget *parent = nullptr, unsigned int uid = 0, Node *node = nullptr);
 
 protected:
     bool eventFilter(QObject *, QEvent *) override;
