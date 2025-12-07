@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.19)
 project(skui LANGUAGES CXX)
 
+find_program(CCACHE ccache)
+if(CCACHE)
+    set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
+endif()
+
+message("CCache executable: ${CCACHE}")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
@@ -18,6 +25,7 @@ target_link_libraries(skui
         Qt::Widgets
 )
 target_link_libraries(skui PRIVATE
+
     nodeeditor
     panel        
     Qt6::Widgets
