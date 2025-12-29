@@ -3,8 +3,8 @@
 
 #include <QSlider>
 
+#include "../node/node.h"
 #include "../visual.h"
-#include "node.h"
 
 class Slider : public Visual
 {

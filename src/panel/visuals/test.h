@@ -4,7 +4,7 @@
 #include <QLabel>
 
 #include "../visual.h"
-#include "node.h"
+#include "../node/node.h"
 
 class Test : public Visual
 {

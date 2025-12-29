@@ -35,3 +35,6 @@ Test *-- QLabel : Parent
 Visual <|-- Slider
 Slider *-- QSlider : Parent
 ```
+
+## CoreNode vs. UINode 
+A *Visual* 

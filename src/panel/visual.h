@@ -12,7 +12,7 @@
 #include <QString>
 #include <QWidget>
 
-#include "node.h"
+#include "../node/node.h"
 #include "resizeboundingbox.h"
 
 enum class DisplayMode { Run, Edit };

@@ -16,8 +16,7 @@ void NodeEditorScene::addNode(Node *node)
 {
     m_nodes.append(node);
     m_debug_x = m_debug_x + 300;
-    QString node_name = node->property("name").toString();
-    NodeGraphicsItem *node_graphicitem = new NodeGraphicsItem(nullptr, node_name);
+    NodeGraphicsItem *node_graphicitem = new NodeGraphicsItem(nullptr, node);
     node_graphicitem->setPos(m_debug_x, 100);
     addItem(node_graphicitem);
 }

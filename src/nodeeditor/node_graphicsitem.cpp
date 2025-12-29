@@ -1,8 +1,8 @@
 #include "node_graphicsitem.h"
 
-NodeGraphicsItem::NodeGraphicsItem(QGraphicsItem *parent, QString node_name)
+NodeGraphicsItem::NodeGraphicsItem(QGraphicsItem *parent, Node *node)
     : QGraphicsItem{parent}
-    , m_node_name(node_name)
+    , m_node(node)
 {}
 
 void NodeGraphicsItem::paint(QPainter *painter,
@@ -16,13 +16,13 @@ void NodeGraphicsItem::paint(QPainter *painter,
     font.setBold(true);
     font.setPixelSize(FONT_SIZE);
     painter->setFont(font);
-    QRect node_name_bounding = QFontMetrics(font).boundingRect(m_node_name);
+    QRect node_name_bounding = QFontMetrics(font).boundingRect(m_node->property("name").toString());
 
     int rect_width = node_name_bounding.width() + BOX_WIDTH * 2 + BOX_MARGIN.right() * 2;
     painter->drawRect(0, 0, rect_width, 200);
     painter->drawText(BOX_MARGIN.left() + BOX_WIDTH,
                       BOX_MARGIN.top() - node_name_bounding.y(),
-                      m_node_name);
+                      m_node->property("name").toString());
 }
 
 QRectF NodeGraphicsItem::boundingRect() const

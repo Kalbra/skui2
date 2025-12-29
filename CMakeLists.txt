@@ -16,19 +16,18 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
 qt_standard_project_setup()
 
 add_subdirectory(src/app)
-add_subdirectory(src/panel)
+add_subdirectory(src/node)
 add_subdirectory(src/nodeeditor)
+add_subdirectory(src/panel)
 
 target_link_libraries(skui
     PRIVATE
-        Qt::Core
-        Qt::Widgets
-)
-target_link_libraries(skui PRIVATE
+        node
+        nodeeditor
+        panel
 
-    nodeeditor
-    panel        
-    Qt6::Widgets
+        Qt::Core
+        Qt::Widgets 
 )
 
 include(GNUInstallDirs)

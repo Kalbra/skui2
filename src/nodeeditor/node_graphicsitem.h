@@ -8,6 +8,8 @@
 #include <QPen>
 #include <QPointF>
 
+#include "../node/node.h"
+
 const QMargins BOX_MARGIN(7, 7, 7, 7);
 const int BOX_WIDTH = 4;
 const int FONT_SIZE = 20;
@@ -15,13 +17,13 @@ const int FONT_SIZE = 20;
 class NodeGraphicsItem : public QGraphicsItem
 {
 public:
-    explicit NodeGraphicsItem(QGraphicsItem *parent = nullptr, QString node_name = "NO NAME");
+    explicit NodeGraphicsItem(QGraphicsItem *parent = nullptr, Node *node = nullptr);
 
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
     QRectF boundingRect() const override;
 
 private:
-    QString m_node_name;
+    Node *m_node;
 };
 
 #endif // NODE_GRAPHICSITEM_H

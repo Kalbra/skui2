@@ -1,5 +1,13 @@
 # User manual
 
+## The Node
+A *Node* is a bock thats has inputs and outputs. These inputs or outputs are called *Interfaces*. 
+You can connect *Interfaces* via a *Cable*.
+A *Cable* routes an input *Interface* to an output *Interface*. It is a visual representation of the connected *Interfaces*.
+*Nodes* can be routed and configured via the *Node Editor*. 
+
+** PICTURE OF NODE IN NODEEDITOR **
+
 ### Controlling vs. Configuring vs. Programming
 Normally these two words are near togehter, linguistically speaking. But in Skui they describe to fundamental differenct things.
 When you *Control* Skui, you run it and change things by controlling *Panels*. Each *Panel* has *Visuals* where the controlling happens. A *Visual* could be a Nob or a Slider.
@@ -29,5 +37,5 @@ or resize the *Visual*.
 If you want to select multible *Visuals* you can either press the mouse and drag or press shift 
 and click on the *Visuals* you want to select.
 
-*GIF ANIMATION*
+**GIF ANIMATION**
 

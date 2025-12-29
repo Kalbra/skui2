@@ -4,7 +4,6 @@
 #include <QJsonObject>
 #include <QObject>
 
-#include "node.h"
 #include "nodeeditor.h"
 #include "panel.h"
 #include "visual.h"

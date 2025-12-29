@@ -3,7 +3,7 @@
 
 #include <QGraphicsView>
 
-#include "node.h"
+#include "../node/node.h"
 #include "nodeeditor_scene.h"
 
 class NodeEditor : public QGraphicsView

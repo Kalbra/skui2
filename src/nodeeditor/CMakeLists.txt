@@ -1,5 +1,4 @@
 qt_add_library(nodeeditor STATIC
-    node.h
     nodeeditor.h nodeeditor.cpp
     nodeeditor_scene.h nodeeditor_scene.cpp
     node_graphicsitem.h node_graphicsitem.cpp
