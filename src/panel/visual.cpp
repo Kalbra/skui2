@@ -3,10 +3,9 @@
 Q_DECLARE_LOGGING_CATEGORY(visual)
 Q_LOGGING_CATEGORY(visual, "VISUAL")
 
-Visual::Visual(QWidget *panel, unsigned int uid, Node *node)
+Visual::Visual(QWidget *panel, unsigned int uid)
     : QWidget(panel)
     , m_uid(uid)
-    , m_node(node)
 {
     setMouseTracking(true);
 
@@ -114,7 +113,7 @@ void Visual::changeGeometryByDelta(DragDirection active_direction, QPointF delta
 void Visual::logInitiation()
 {
     qInfo(visual) << QString("Initiated '%1'(%2) at 0x%3")
-                         .arg(info_class_name)
+                         .arg("Implement again as property")
                          .arg(QString::number(m_uid))
                          .arg(reinterpret_cast<quintptr>(this), QT_POINTER_SIZE * 2, 16, QChar('0'));
 }

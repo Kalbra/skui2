@@ -24,27 +24,29 @@ Visual *Document::createVisual(VisualType type)
     container.type = type;
 
     if (type == VisualType::Test) {
-        Node *node = new Node(this);
-        node->setProperty("name", "Test");
-        m_nodeeditor->addNode(node);
-        Test *test = new Test(m_panel, visual_uid_count, node);
-        connect(test->resize_bounding_box,
+        Label *label = new Label(this);
+        label->setPanel(m_panel);
+        label->setNodeEditor(m_nodeeditor);
+        m_nodeeditor->addNode(label);
+
+        connect(label->getVisual()->resize_bounding_box,
                 &ResizeBoundingBox::changedDelta,
                 m_panel,
                 &Panel::changeGeometryForSelected);
-        container.ptr = test;
+        container.ptr = label->getVisual();
         visual_uid_count++;
     } else if (type == VisualType::Slider) {
-        Node *node = new Node(this);
-        node->setProperty("name", "Slider");
-        node->set
-        m_nodeeditor->addNode(node);
-        Slider *slider = new Slider(m_panel, visual_uid_count, node);
-        connect(slider->resize_bounding_box,
+        Slider *slider = new Slider(this);
+        slider->setPanel(m_panel);
+        slider->setNodeEditor(m_nodeeditor);
+        m_nodeeditor->addNode(slider);
+
+        connect(slider->getVisual()->resize_bounding_box,
                 &ResizeBoundingBox::changedDelta,
                 m_panel,
                 &Panel::changeGeometryForSelected);
-        container.ptr = slider;
+
+        container.ptr = slider->getVisual();
         visual_uid_count++;
     } else {
         container.ptr = nullptr;

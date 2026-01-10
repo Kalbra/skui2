@@ -52,6 +52,7 @@ private:
     Panel *panel;
 
     void loadInsertVisualMenu();
+    void loadDebugMenu();
     void loadAlignTools();
     const QIcon loadIcon(const QString &);
 };

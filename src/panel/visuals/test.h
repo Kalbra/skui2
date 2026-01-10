@@ -10,7 +10,7 @@ class Test : public Visual
 {
     Q_OBJECT
 public:
-    explicit Test(QWidget *panel = nullptr, unsigned int uid = 0, Node *node = nullptr);
+    explicit Test(QWidget *panel = nullptr, unsigned int uid = 0);
 };
 
 #endif // TEST_H

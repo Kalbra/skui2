@@ -5,9 +5,10 @@
 #include <QObject>
 
 #include "nodeeditor.h"
+#include "nodes/slider.h"
+#include "nodes/label.h"
 #include "panel.h"
 #include "visual.h"
-#include "visuals/slider.h"
 #include "visuals/test.h"
 
 class Document : QObject

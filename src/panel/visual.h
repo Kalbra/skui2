@@ -12,7 +12,6 @@
 #include <QString>
 #include <QWidget>
 
-#include "../node/node.h"
 #include "resizeboundingbox.h"
 
 enum class DisplayMode { Run, Edit };
@@ -34,7 +33,7 @@ class Visual : public QWidget
     Q_OBJECT
 
 public:
-    explicit Visual(QWidget *panel = nullptr, unsigned int uid = 0, Node *node = nullptr);
+    explicit Visual(QWidget *panel = nullptr, unsigned int uid = 0);
     virtual ~Visual() {};
 
     void remove();
@@ -46,20 +45,13 @@ public slots:
     void setMode(DisplayMode);
     void changeGeometry(QRect);
     void changeGeometryByDelta(DragDirection, QPointF);
-
-protected:
-    QString info_name = "Base Class";
-    QString info_class_name = "Visual";
-    QString info_description = "This class is the base for every visual. If you can see this, the "
-                               "base class is called without a child.";
-
     void setMinimumSize(QSize);
 
+protected:
     bool checkForParentHandling(QEvent *);
 
 private:
     int m_uid;
-    Node *m_node;
 
     void logInitiation();
 

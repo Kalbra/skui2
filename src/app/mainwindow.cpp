@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     focus_document = new Document(this, panel, nodeeditor);
 
     loadInsertVisualMenu();
+    loadDebugMenu();
 
     loadAlignTools();
 
@@ -46,6 +47,21 @@ void MainWindow::loadInsertVisualMenu()
         menu_insert_action->setText(wraped_action.name);
         ui->menuInsertVisual->addAction(menu_insert_action);
     }
+}
+
+void MainWindow::loadDebugMenu()
+{
+#ifdef QT_DEBUG
+    QMenu *debug_menu = menuBar()->addMenu("Debug");
+    debug_menu->addAction("Insert routed Slider => Laber", this, [this]() {
+        Slider *slider = new Slider(this);
+        slider->setPanel(panel);
+        Label *label = new Label(this);
+        label->setPanel(panel);
+        qDebug() << "Routing Slider to Label";
+        qDebug() << slider->getInterfaces().first().routeTo(&label->getInterfaces().first());
+    });
+#endif
 }
 
 const QIcon MainWindow::loadIcon(const QString &identifier)
