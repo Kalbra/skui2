@@ -9,7 +9,6 @@
 #include "nodes/slider.h"
 #include "panel.h"
 #include "visual.h"
-#include "visuals/test.h"
 
 class Document : QObject
 {

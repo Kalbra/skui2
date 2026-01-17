@@ -1,6 +1,5 @@
 qt_add_library(panel STATIC
     visual.h visual.cpp
-    visuals/test.h visuals/test.cpp
     resizeboundingbox.h resizeboundingbox.cpp
     panel.h panel.cpp
 )
