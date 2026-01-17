@@ -1,4 +1,17 @@
 {
-    "cmake.sourceDirectory": "C:/Users/kalle/OneDrive/Workspace/Programmieren/skui2/src",
-    "editor.formatOnSave": true
+    "cmake.sourceDirectory": "C:/Users/kalle/OneDrive/Workspace/Programmieren/skui2",
+    "editor.formatOnSave": true,
+    "C_Cpp.formatting": "clangFormat",
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "files.associations": {
+        "*.cps": "javascript",
+        "charconv": "cpp",
+        "ratio": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
