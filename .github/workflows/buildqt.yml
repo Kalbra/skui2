@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'   # fetch submodules recursively
+          fetch-depth: 0            # fetch full history (needed for some submodule workflows)
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
