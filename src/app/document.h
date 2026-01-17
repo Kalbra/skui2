@@ -5,8 +5,8 @@
 #include <QObject>
 
 #include "nodeeditor.h"
-#include "nodes/slider.h"
 #include "nodes/label.h"
+#include "nodes/slider.h"
 #include "panel.h"
 #include "visual.h"
 #include "visuals/test.h"

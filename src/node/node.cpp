@@ -21,5 +21,5 @@ Interface *Node::getInterface(const QString &identifier)
         }
     }
 
-    return nullptr;  // No interface found with the given identifier
+    return nullptr; // No interface found with the given identifier
 }

@@ -1,6 +1,8 @@
 {
     "cmake.sourceDirectory": "C:/Users/kalle/OneDrive/Workspace/Programmieren/skui2",
     "editor.formatOnSave": true,
+    "C_Cpp.formatting": "clangFormat",
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
     "files.associations": {
         "*.cps": "javascript",
         "charconv": "cpp",
