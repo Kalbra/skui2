@@ -1,28 +1,25 @@
 #include "slider.h"
 
 Slider::Slider(QObject *parent)
-    : Node{parent}
+    : Visual{parent}
 {
     setInterfaces({Interface(QVariant(0), InterfaceDirection::Output, "value")});
     setProperty("name", "Slider");
 }
 
-void Slider::paintVisual(Visual *visual)
+QWidget *Slider::paintWidget(VisualContainer *visual_container)
 {
-    visual->setGeometry(QRect(200, 200, 400, 100));
-    visual->setMinimumSize(QSize(400, 100));
-    visual->setMouseTracking(true);
-
     //Create a slider in the panel for this node.
-    QSlider *slider = new QSlider(visual);
+    QSlider *slider = new QSlider(visual_container);
     slider->setOrientation(Qt::Horizontal);
-    slider->setGeometry(10, 10, 200, 30);
+    //slider->setFixedSize(200, 30);
     slider->setMinimum(0);
     slider->setMaximum(100);
     slider->setValue(50);
     slider->show();
     qDebug() << "Slider created";
     connect(slider, &QSlider::valueChanged, this, &Slider::onSliderValueChanged);
+    return slider;
 }
 
 void Slider::onSliderValueChanged(int value)

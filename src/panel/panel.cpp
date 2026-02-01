@@ -8,58 +8,58 @@ Panel::Panel(QWidget *parent)
 {
     setMouseTracking(true);
 
-    rubber_band = new QRubberBand(QRubberBand::Rectangle, this);
+    m_rubber_band = new QRubberBand(QRubberBand::Rectangle, this);
 }
 
-QList<Visual *> Panel::visualChildIn(QRect rect)
+QList<QWidget *> Panel::childIn(QRect section)
 {
-    QList<Visual *> contained_visuals;
-    foreach (Visual *visual, findChildren<Visual *>()) {
-        if (rect.intersects(visual->geometry())) {
-            contained_visuals.append(visual);
-        }
+    QList<QWidget *> contained_widgets;
+
+    for (QWidget *child : findChildren<VisualContainer *>(Qt::FindDirectChildrenOnly)) {
+        if (section.intersects(child->geometry()))
+            contained_widgets.append(child);
     }
-    return contained_visuals;
+
+    return contained_widgets;
 }
 
-Visual *Panel::visualChildAt(QPoint point)
+QWidget *Panel::childAt(QPoint point)
 {
-    QList<Visual *> visuals = findChildren<Visual *>();
-    QMutableListIterator<Visual *> visual(visuals);
+    QWidget *top_level_widget = nullptr;
 
-    Visual *top_level_visual = nullptr;
-
-    while (visual.hasNext()) {
-        if (visual.next()->geometry().contains(point)) {
-            top_level_visual = visual.value();
+    for (QWidget *child : findChildren<VisualContainer *>(Qt::FindDirectChildrenOnly)) {
+        if (child->geometry().contains(point)) {
+            top_level_widget = child;
         }
     }
-    return top_level_visual;
+
+    return top_level_widget;
 }
 
 void Panel::setMode(DisplayMode display_mode)
 {
-    this->display_mode = display_mode;
+    m_display_mode = display_mode;
 }
 
 void Panel::triggeredAlign(AlignDirection direction)
 {
-    QRect bounding_box = calculateMinimumBoundingBox(selected_visuals);
+    //@TODO Proper alignment of selected QWidgets
+    QRect minimal_rect = minimalSelectedRect();
 
-    for (Visual *visual : selected_visuals) {
-        alignVisualToBoundingBox(direction, visual, bounding_box);
+    for (const RbbWidgetPair pair : m_selection) {
+        alignChildToMinRect(direction, pair, minimal_rect);
     }
 }
 
-QRect Panel::calculateMinimumBoundingBox(const QList<Visual *> &visuals)
+QRect Panel::minimalSelectedRect()
 {
     int top = INT_MAX;
     int left = INT_MAX;
     int bottom = INT_MIN;
     int right = INT_MIN;
 
-    for (const Visual *visual : visuals) {
-        QRect rect = visual->geometry();
+    for (const RbbWidgetPair pair : m_selection) {
+        QRect rect = pair.second->geometry();
 
         top = std::min(top, rect.top());
         left = std::min(left, rect.left());
@@ -70,72 +70,165 @@ QRect Panel::calculateMinimumBoundingBox(const QList<Visual *> &visuals)
     return QRect(QPoint(left, top), QPoint(right, bottom));
 }
 
-void Panel::alignVisualToBoundingBox(AlignDirection direction, Visual *target, QRect bounding_box)
+void Panel::alignChildToMinRect(AlignDirection direction,
+                                RbbWidgetPair rbbw_pair,
+                                QRect minimal_rect)
 {
-    QRect new_geometry = target->geometry();
+    ResizeBoundingBox *rbb = rbbw_pair.first;
+    QWidget *widget = rbbw_pair.second;
+    QRect new_geometry = widget->geometry();
 
     switch (direction) {
     case AlignDirection::Top:
-        new_geometry.moveTop(bounding_box.top());
+        new_geometry.moveTop(minimal_rect.top());
         break;
     case AlignDirection::Right:
-        new_geometry.moveRight(bounding_box.right());
+        new_geometry.moveRight(minimal_rect.right());
         break;
     case AlignDirection::Bottom:
-        new_geometry.moveBottom(bounding_box.bottom());
+        new_geometry.moveBottom(minimal_rect.bottom());
         break;
     case AlignDirection::Left:
-        new_geometry.moveLeft(bounding_box.left());
+        new_geometry.moveLeft(minimal_rect.left());
+        break;
+    case AlignDirection::Horizontal:
+        new_geometry.moveCenter(QPoint(minimal_rect.center().x(), new_geometry.center().y()));
+        break;
+    case AlignDirection::Vertical:
+        new_geometry.moveCenter(QPoint(new_geometry.center().x(), minimal_rect.center().y()));
         break;
     default:
         return;
     }
 
-    target->setGeometry(new_geometry);
+    widget->setGeometry(new_geometry);
+    rbb->setBoxGeometry(new_geometry);
 }
 
-void Panel::select(Visual *visual)
+void Panel::select(QWidget *child)
 {
-    visual->resize_bounding_box->show();
-    selected_visuals.append(visual);
+    ResizeBoundingBox *rbb = new ResizeBoundingBox(this);
+    rbb->setBoxGeometry(child->geometry());
+    rbb->show();
+    connect(rbb, &ResizeBoundingBox::changedDelta, this, &Panel::changeGeometryForSelected);
+    m_selection.append({rbb, child});
+    //@TODO: Replace with actual name
     qInfo() << QString("Select: IMPLEMENT NAME");
 }
 
 void Panel::deselectAll()
 {
-    QMutableListIterator<Visual *> visual(selected_visuals);
-    while (visual.hasNext()) {
-        visual.next()->resize_bounding_box->hide();
-        visual.remove();
-        qInfo() << QString("Deselect: IMPLEMENT NAME");
+    QMutableListIterator<RbbWidgetPair> i(m_selection);
+    while (i.hasNext()) {
+        ResizeBoundingBox *rbb = i.next().first;
+        delete rbb;
+        i.remove();
     }
+    //@TODO: Replace with actual name
 }
 
-void Panel::selectSingle(QPoint positon)
+void Panel::selectSingle(QPoint position)
 {
-    Visual *top_level_visual = visualChildAt(positon);
-    if (top_level_visual) {
+    QWidget *top_level_child = childAt(position);
+    if (top_level_child) {
         bool shift_down = QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier);
-        if (!shift_down)
+        if (!shift_down) {
             deselectAll();
-        select(top_level_visual);
+        }
+        select(top_level_child);
     }
 }
 
-void Panel::selectMultiple(QList<Visual *> found_visuals)
+void Panel::selectMultiple(const QList<QWidget *> &found_widgets)
 {
-    if (!found_visuals.isEmpty()) {
-        foreach (Visual *visual, found_visuals) {
-            select(visual);
-        }
+    for (QWidget *widget : found_widgets) {
+        select(widget);
     }
 }
 
 void Panel::changeGeometryForSelected(DragDirection active_direction, QPointF delta)
 {
-    foreach (Visual *visual, selected_visuals) {
-        visual->changeGeometryByDelta(active_direction, delta);
+    for (RbbWidgetPair select : m_selection) {
+        ResizeBoundingBox *rbb = select.first;
+        QWidget *widget = select.second;
+
+        QRect new_geometry = calculateNewGeometry(delta,
+                                                  widget->geometry(),
+                                                  active_direction,
+                                                  widget->minimumWidth(),
+                                                  widget->minimumHeight());
+
+        widget->setGeometry(new_geometry);
+        rbb->setBoxGeometry(new_geometry);
     }
+}
+
+QRect Panel::calculateNewGeometry(
+    QPointF delta, QRect old_geometry, DragDirection active_direction, int min_w, int min_h)
+{
+    int initial_x = old_geometry.x();
+    int initial_y = old_geometry.y();
+    int initial_w = old_geometry.width();
+    int initial_h = old_geometry.height();
+
+    int new_x = initial_x;
+    int new_y = initial_y;
+    int new_w = initial_w;
+    int new_h = initial_h;
+
+    switch (active_direction) {
+    case DragDirection::North: // Fixed: Bottom
+        new_y = initial_y + delta.y();
+        new_h = initial_h - delta.y();
+        break;
+    case DragDirection::NorthEast: // Fixed: BottomLeft
+        new_y = initial_y + delta.y();
+        new_w = initial_w + delta.x();
+        new_h = initial_h - delta.y();
+        break;
+    case DragDirection::East: // Fixed: Left
+        new_w = initial_w + delta.x();
+        break;
+    case DragDirection::SouthEast: // Fixed: TopLeft
+        new_w = initial_w + delta.x();
+        new_h = initial_h + delta.y();
+        break;
+    case DragDirection::South: // Fixed: Top
+        new_h = initial_h + delta.y();
+        break;
+    case DragDirection::SouthWest: // Fixed: TopRight
+        new_x = initial_x + delta.x();
+        new_w = initial_w - delta.x();
+        new_h = initial_h + delta.y();
+        break;
+    case DragDirection::West: // Fixed: Right
+        new_x = initial_x + delta.x();
+        new_w = initial_w - delta.x();
+        break;
+    case DragDirection::NorthWest: // Fixed: BottomRight
+        new_x = initial_x + delta.x();
+        new_y = initial_y + delta.y();
+        new_w = initial_w - delta.x();
+        new_h = initial_h - delta.y();
+        break;
+    case DragDirection::Center:
+        new_x = initial_x + delta.x();
+        new_y = initial_y + delta.y();
+        break;
+    default: // DrageDirection::None
+        break;
+    }
+
+    if (new_w < min_w) {
+        new_w = initial_w;
+        new_x = initial_x;
+    }
+    if (new_h < min_h) {
+        new_h = initial_h;
+        new_y = initial_y;
+    }
+
+    return QRect(new_x, new_y, new_w, new_h);
 }
 
 bool Panel::inMouseWiggleTolerance(QSize size)
@@ -149,35 +242,121 @@ bool Panel::inMouseWiggleTolerance(QSize size)
 
 void Panel::mousePressEvent(QMouseEvent *event)
 {
-    if (display_mode == DisplayMode::Edit) {
-        origin = event->pos();
-        rubber_band->setGeometry(QRect(origin, QSize(1, 1)));
-        rubber_band->show();
+    if (m_display_mode == DisplayMode::Edit) {
+        m_origin = event->pos();
+        m_rubber_band->setGeometry(QRect(m_origin, QSize(1, 1)));
+        m_rubber_band->show();
     }
 }
 
 void Panel::mouseMoveEvent(QMouseEvent *event)
 {
-    if (display_mode == DisplayMode::Edit) {
-        rubber_band->setGeometry(QRect(origin, event->pos()).normalized());
+    if (m_display_mode == DisplayMode::Edit) {
+        m_rubber_band->setGeometry(QRect(m_origin, event->pos()).normalized());
     }
 }
 
 void Panel::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (display_mode == DisplayMode::Edit) {
-        rubber_band->hide();
+    if (m_display_mode == DisplayMode::Edit) {
+        m_rubber_band->hide();
 
-        QList<Visual *> found_visuals = visualChildIn(rubber_band->geometry());
+        QList<QWidget *> found_visuals = childIn(m_rubber_band->geometry());
         if (found_visuals.isEmpty()) {
             deselectAll();
             return;
         }
 
-        if (inMouseWiggleTolerance(rubber_band->size())) {
+        if (inMouseWiggleTolerance(m_rubber_band->size())) {
             selectSingle(event->pos());
         } else { // selction via rubber band
             selectMultiple(found_visuals);
         }
     }
+}
+
+void Panel::installEventFilterRecursively(QObject *obj)
+{
+    if (obj->isWidgetType()) {
+        obj->installEventFilter(this);
+
+        // Enable mouse tracking to receive mouse move events even when no button is pressed
+        if (QWidget *widget = qobject_cast<QWidget *>(obj)) {
+            widget->setMouseTracking(true);
+        }
+    }
+
+    for (QObject *child : obj->children()) {
+        installEventFilterRecursively(child);
+    }
+}
+
+void Panel::childEvent(QChildEvent *event)
+{
+    if (event->type() == QEvent::ChildAdded) {
+        installEventFilterRecursively(event->child());
+    }
+    QWidget::childEvent(event);
+}
+
+bool Panel::eventFilter(QObject *watched, QEvent *event)
+{
+    // Install event filter on any newly added QWidget child
+    if (event->type() == QEvent::ChildAdded) {
+        QChildEvent *child_event = static_cast<QChildEvent *>(event);
+        if (child_event->child()->isWidgetType()) {
+            installEventFilterRecursively(child_event->child());
+        }
+    }
+
+    bool no_rbb = !qobject_cast<ResizeBoundingBox *>(watched);
+    bool mouse_event = event->type() == QEvent::MouseButtonPress
+                       || event->type() == QEvent::MouseMove
+                       || event->type() == QEvent::MouseButtonRelease;
+    bool forward_mouse_events = (m_display_mode == DisplayMode::Edit) && mouse_event && no_rbb;
+    if (forward_mouse_events) {
+        //@TODO: Check coordinate system of event. It might be that the coordiante system
+        //       of the event is relative to the child widget, not the panel.
+        QMouseEvent *mapped_event = mapMouseEventToPanel(static_cast<QMouseEvent *>(event),
+                                                         qobject_cast<QWidget *>(watched));
+
+        switch (event->type()) {
+        case QEvent::MouseButtonPress:
+            mousePressEvent(mapped_event);
+            delete mapped_event;
+            return true;
+        case QEvent::MouseMove:
+            mouseMoveEvent(mapped_event);
+            delete mapped_event;
+            return true;
+        case QEvent::MouseButtonRelease:
+            mouseReleaseEvent(mapped_event);
+            delete mapped_event;
+            return true;
+        default:
+            delete mapped_event;
+            break;
+        }
+        //@TODO: Crash on double click events
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
+
+QMouseEvent *Panel::mapMouseEventToPanel(QMouseEvent *origin_event, QWidget *source_widget)
+{
+    QPoint new_pos = origin_event->pos();
+    if (source_widget && source_widget != this) {
+        new_pos = source_widget->mapTo(this, origin_event->pos());
+    }
+
+    QMouseEvent *mapped_event = new QMouseEvent(origin_event->type(),
+                                                new_pos,
+                                                origin_event->globalPosition(),
+                                                origin_event->button(),
+                                                origin_event->buttons(),
+                                                origin_event->modifiers(),
+                                                origin_event->pointingDevice());
+
+    return mapped_event;
 }
