@@ -1,6 +1,7 @@
 qt_add_library(node STATIC
     node.h node.cpp
     interface.h interface.cpp
+    nodes/visual.h nodes/visual.cpp
     nodes/label.h nodes/label.cpp
     nodes/slider.h nodes/slider.cpp
 )

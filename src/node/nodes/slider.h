@@ -4,9 +4,9 @@
 #include <QDebug>
 #include <QSlider>
 
-#include "../node.h"
+#include "visual.h"
 
-class Slider : public Node
+class Slider : public Visual
 {
     Q_OBJECT
 public:
@@ -16,7 +16,7 @@ private slots:
     void onSliderValueChanged(int value);
 
 private:
-    void paintVisual(Visual *panel) override;
+    QWidget *paintWidget(VisualContainer *) override;
 };
 
 #endif // SLIDER_H

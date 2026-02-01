@@ -8,7 +8,8 @@
 #include "nodes/label.h"
 #include "nodes/slider.h"
 #include "panel.h"
-#include "visual.h"
+
+enum class VisualType { Parent, Test, Slider };
 
 class Document : QObject
 {
@@ -21,14 +22,11 @@ public:
     QJsonObject save();
     void load(QJsonObject);
 
-    Visual *createVisual(VisualType type);
+    void createVisual(VisualType type);
 
     DisplayMode display_mode = DisplayMode::Run;
 
 private:
-    unsigned int visual_uid_count = 0;
-    QList<VisualContainer> visuals;
-
     Panel *m_panel;
     NodeEditor *m_nodeeditor;
 };
