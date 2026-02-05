@@ -128,9 +128,10 @@ void ResizeBoundingBox::mouseMoveEvent(QMouseEvent *event)
     if (mouse_pressed) {
         QPointF delta = event->globalPosition() - last_global_position;
         last_global_position = event->globalPosition();
-
         emit changedDelta(active_direction, delta);
-    } else { // On hover
+    }
+
+    else { // On hover
         active_direction = containesHitbox(event->pos());
         setHoverCursor(active_direction);
     }
@@ -146,6 +147,8 @@ void ResizeBoundingBox::mousePressEvent(QMouseEvent *event)
         if (active_direction == DragDirection::Center) {
             setCursor(Qt::ClosedHandCursor);
         }
+    } else if (event->buttons() == Qt::RightButton) {
+        emit requestedPropertyWindow();
     }
 }
 

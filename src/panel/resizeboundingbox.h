@@ -7,9 +7,10 @@
 #include <QPainter>
 #include <QWidget>
 
-const int OUTER_HITBOX_SIZE = 10;
-const QMargins WIDGET_MARGIN(20, 20, 20, 20);
-const QMargins CENTER_HITBOX_MARGIN(15, 15, 15, 15);
+
+static const int OUTER_HITBOX_SIZE = 10;
+static const QMargins WIDGET_MARGIN(20, 20, 20, 20);
+static const QMargins CENTER_HITBOX_MARGIN(15, 15, 15, 15);
 
 enum class DragDirection {
     NorthWest,
@@ -30,8 +31,23 @@ class ResizeBoundingBox : public QWidget
 public:
     explicit ResizeBoundingBox(QWidget *parent = nullptr);
 
-    void setBoxGeometry(QRect);
-    void setBoxMinimumSize(QSize);
+    /* @brief Sets the size of bounding box.
+
+    This method sets the size of the visable bounding box.
+    The actual Widget has an offset, so that the mouse direction ankers are drawn correctly.
+
+    @param box_geometry Geometry of the bounding box.
+    */
+    void setBoxGeometry(QRect box_geometry);
+
+    /* @brief Sets the minimum size of the bounding box.
+    
+    This method sets the minimum size of the visable bounding box.
+    The actual Widget has an offset, so that the mouse direction ankers are drawn correctly.
+
+    @param size Minimum size of the bounding box.
+    */
+    void setBoxMinimumSize(QSize size);
 
 protected:
     void mousePressEvent(QMouseEvent *) override;
@@ -41,8 +57,8 @@ protected:
     void paintEvent(QPaintEvent *) override;
 
 signals:
-    void changedGeometry(QRect);
     void changedDelta(DragDirection, QPointF);
+    void requestedPropertyWindow();
 
 private:
     QRect box_geometry;

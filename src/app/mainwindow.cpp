@@ -40,8 +40,8 @@ void MainWindow::loadInsertVisualMenu()
     for (const VisualMenuAction &wraped_action : wrapped_actions) {
         QAction *menu_insert_action = new QAction(wraped_action.name);
         connect(menu_insert_action, &QAction::triggered, this, [this, wraped_action] {
-            Visual *visual = focus_document->createVisual(wraped_action.type);
-            connect(this, &MainWindow::modeChanged, visual, &Visual::setMode);
+            focus_document->createVisual(wraped_action.type);
+            //connect(this, &MainWindow::modeChanged, visual, &Visual::setMode);
         });
 
         menu_insert_action->setText(wraped_action.name);
