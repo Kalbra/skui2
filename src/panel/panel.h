@@ -8,16 +8,25 @@
 #include <QWidget>
 
 #include "../node/nodes/visual.h"
+<<<<<<< HEAD
 #include "propertywindow.h"
+=======
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
 #include "resizeboundingbox.h"
 #include "visual_container.h"
 
 enum class AlignDirection { Top, Right, Bottom, Left, Horizontal, Vertical };
 
 enum class DisplayMode { Run, Edit };
+<<<<<<< HEAD
 
 static const int MAX_MOUSE_WIGGLE_TOLERANCE = 5; // px of size
 
+=======
+
+const int MAX_MOUSE_WIGGLE_TOLERANCE = 5; // px of size
+
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
 using RbbWidgetPair = std::pair<ResizeBoundingBox *, QWidget *>;
 class Panel : public QWidget
 {
@@ -27,7 +36,11 @@ public:
     explicit Panel(QWidget *parent = nullptr);
 
 public slots:
+<<<<<<< HEAD
     /** @brief Sets the display mode of the panel.
+=======
+    /* @brief Sets the display mode of the panel.
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
      * 
      * This method changes the display mode of the panel to either Run or Edit.
      * In Edit mode, users can select and manipulate visual elements within the panel.
@@ -36,7 +49,11 @@ public slots:
      * @param display_mode The desired display mode (Run or Edit).
     */
     void setMode(DisplayMode display_mode);
+<<<<<<< HEAD
     /** @brief Align selected to direction.
+=======
+    /* @brief Align selected to direction.
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
      * 
      * This method aligns selected children and aligns them to a direction. 
      * 
@@ -46,6 +63,7 @@ public slots:
 
     void changeGeometryForSelected(DragDirection, QPointF);
 
+<<<<<<< HEAD
     /** @brief Spawns a new Propery Window.
      *
      * This method spawns a property window for the senders (ResizeBoundingBox) 
@@ -55,6 +73,8 @@ public slots:
     */
     void spawnPropertyWindow();
 
+=======
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
 protected:
     void mousePressEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;

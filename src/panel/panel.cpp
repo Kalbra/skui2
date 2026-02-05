@@ -111,7 +111,10 @@ void Panel::select(QWidget *child)
     rbb->setBoxGeometry(child->geometry());
     rbb->show();
     connect(rbb, &ResizeBoundingBox::changedDelta, this, &Panel::changeGeometryForSelected);
+<<<<<<< HEAD
     connect(rbb, &ResizeBoundingBox::requestedPropertyWindow, this, &Panel::spawnPropertyWindow);
+=======
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
     m_selection.append({rbb, child});
     //@TODO: Replace with actual name
     qInfo() << QString("Select: IMPLEMENT NAME");
@@ -310,11 +313,19 @@ bool Panel::eventFilter(QObject *watched, QEvent *event)
         }
     }
 
+<<<<<<< HEAD
     bool is_visual = qobject_cast<VisualContainer *>(watched);
     bool mouse_event = event->type() == QEvent::MouseButtonPress
                        || event->type() == QEvent::MouseMove
                        || event->type() == QEvent::MouseButtonRelease;
     bool forward_mouse_events = (m_display_mode == DisplayMode::Edit) && mouse_event && is_visual;
+=======
+    bool no_rbb = !qobject_cast<ResizeBoundingBox *>(watched);
+    bool mouse_event = event->type() == QEvent::MouseButtonPress
+                       || event->type() == QEvent::MouseMove
+                       || event->type() == QEvent::MouseButtonRelease;
+    bool forward_mouse_events = (m_display_mode == DisplayMode::Edit) && mouse_event && no_rbb;
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
     if (forward_mouse_events) {
         //@TODO: Check coordinate system of event. It might be that the coordiante system
         //       of the event is relative to the child widget, not the panel.
@@ -360,6 +371,7 @@ QMouseEvent *Panel::mapMouseEventToPanel(QMouseEvent *origin_event, QWidget *sou
                                                 origin_event->pointingDevice());
 
     return mapped_event;
+<<<<<<< HEAD
 }
 
 void Panel::spawnPropertyWindow()
@@ -373,3 +385,6 @@ void Panel::spawnPropertyWindow()
         }
     }
 }
+=======
+}
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075

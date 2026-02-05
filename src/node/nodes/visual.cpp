@@ -3,6 +3,7 @@
 Q_DECLARE_LOGGING_CATEGORY(visual)
 Q_LOGGING_CATEGORY(visual, "VISUAL")
 
+<<<<<<< HEAD
 QMap<QString, int> Visual::instance_counter;
 
 Visual::Visual(QObject *parent)
@@ -10,6 +11,11 @@ Visual::Visual(QObject *parent)
 {
     qDebug() << this->metaObject()->className();
 }
+=======
+Visual::Visual(QObject *parent)
+    : Node(parent)
+{}
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
 
 void Visual::setPanel(QWidget *panel_widget, QPoint position)
 {
@@ -30,6 +36,7 @@ QWidget *Visual::paintWidget(VisualContainer *visual_container)
     widget->setStyleSheet("background-color: orange; border: 1px solid gray;");
     return widget;
 }
+<<<<<<< HEAD
 
 void Visual::config()
 {
@@ -44,3 +51,5 @@ void Visual::config()
 
     qDebug(visual) << "Created Viusal <" << instance_name << ">";
 }
+=======
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075

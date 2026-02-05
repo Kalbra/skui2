@@ -12,6 +12,10 @@ QWidget *Slider::paintWidget(VisualContainer *visual_container)
     //Create a slider in the panel for this node.
     QSlider *slider = new QSlider(visual_container);
     slider->setOrientation(Qt::Horizontal);
+<<<<<<< HEAD
+=======
+    //slider->setFixedSize(200, 30);
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
     slider->setMinimum(0);
     slider->setMaximum(100);
     slider->setValue(50);

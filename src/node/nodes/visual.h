@@ -14,6 +14,7 @@ public:
     explicit Visual(QObject *parent = nullptr);
     virtual ~Visual() {};
 
+<<<<<<< HEAD
     void setPanel(QWidget *panel_widget, QPoint position = QPoint(0, 0));
     void setPanelPosition(QPoint);
     virtual QWidget *paintWidget(VisualContainer *parent);
@@ -31,6 +32,15 @@ private:
     VisualContainer *m_visual_container = nullptr;
     QWidget *m_visual_widget = nullptr;
     static QMap<QString, int> instance_counter;
+=======
+    void setPanel(QWidget *panel_widget, QPoint position = QPoint(0,0));
+    void setPanelPosition(QPoint);
+    virtual QWidget *paintWidget(VisualContainer *parent);
+
+private:
+    VisualContainer *m_visual_container = nullptr;
+    QWidget *m_visual_widget = nullptr;
+>>>>>>> f6f6ac898a1457f9f4378ef833cadc560b34b075
 };
 
 #endif // VISUAL_H
