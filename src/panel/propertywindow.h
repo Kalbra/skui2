@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QMetaProperty>
 #include <QWidget>
+#include <QScrollArea>
 
 class PropertyWindow : public QWidget
 {

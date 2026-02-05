@@ -8,6 +8,7 @@
 #include <QWidget>
 
 #include "../node/nodes/visual.h"
+#include "propertywindow.h"
 #include "resizeboundingbox.h"
 #include "visual_container.h"
 
@@ -15,7 +16,7 @@ enum class AlignDirection { Top, Right, Bottom, Left, Horizontal, Vertical };
 
 enum class DisplayMode { Run, Edit };
 
-const int MAX_MOUSE_WIGGLE_TOLERANCE = 5; // px of size
+static const int MAX_MOUSE_WIGGLE_TOLERANCE = 5; // px of size
 
 using RbbWidgetPair = std::pair<ResizeBoundingBox *, QWidget *>;
 class Panel : public QWidget
@@ -26,7 +27,7 @@ public:
     explicit Panel(QWidget *parent = nullptr);
 
 public slots:
-    /* @brief Sets the display mode of the panel.
+    /** @brief Sets the display mode of the panel.
      * 
      * This method changes the display mode of the panel to either Run or Edit.
      * In Edit mode, users can select and manipulate visual elements within the panel.
@@ -35,7 +36,7 @@ public slots:
      * @param display_mode The desired display mode (Run or Edit).
     */
     void setMode(DisplayMode display_mode);
-    /* @brief Align selected to direction.
+    /** @brief Align selected to direction.
      * 
      * This method aligns selected children and aligns them to a direction. 
      * 
@@ -44,6 +45,15 @@ public slots:
     void triggeredAlign(AlignDirection direction);
 
     void changeGeometryForSelected(DragDirection, QPointF);
+
+    /** @brief Spawns a new Propery Window.
+     *
+     * This method spawns a property window for the senders (ResizeBoundingBox) 
+     * paired widget (Visual). If the sender cannot be mapped to a widget the
+     * creation of the Widget is ignored. The PropertyWindow will be created as
+     * a new top level window.
+    */
+    void spawnPropertyWindow();
 
 protected:
     void mousePressEvent(QMouseEvent *) override;

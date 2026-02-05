@@ -3,8 +3,8 @@
 Slider::Slider(QObject *parent)
     : Visual{parent}
 {
+    config();
     setInterfaces({Interface(QVariant(0), InterfaceDirection::Output, "value")});
-    setProperty("name", "Slider");
 }
 
 QWidget *Slider::paintWidget(VisualContainer *visual_container)
@@ -12,12 +12,10 @@ QWidget *Slider::paintWidget(VisualContainer *visual_container)
     //Create a slider in the panel for this node.
     QSlider *slider = new QSlider(visual_container);
     slider->setOrientation(Qt::Horizontal);
-    //slider->setFixedSize(200, 30);
     slider->setMinimum(0);
     slider->setMaximum(100);
     slider->setValue(50);
     slider->show();
-    qDebug() << "Slider created";
     connect(slider, &QSlider::valueChanged, this, &Slider::onSliderValueChanged);
     return slider;
 }

@@ -3,7 +3,7 @@
 Label::Label(QObject *parent)
     : Visual{parent}
 {
-    setProperty("name", "Label");
+    config();
     Interface text_interface = Interface(QVariant(0), InterfaceDirection::Input, "text");
 
     setInterfaces({text_interface});
