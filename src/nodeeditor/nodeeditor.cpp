@@ -3,6 +3,8 @@
 NodeEditor::NodeEditor(QWidget *parent)
     : QGraphicsView{parent}
 {
+    setMouseTracking(true);
+
     m_scene = new NodeEditorScene(parent);
     setScene(m_scene);
     setSceneRect(0, 0, 1000, 1000);

@@ -1,0 +1,59 @@
+#ifndef PAD_H
+#define PAD_H
+
+#include <QCursor>
+#include <QGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+
+static const int LINE_WIDTH = 3;
+static const int PAD_SIZE = 10;
+static const int PAD_EXPANDED = 12;
+static const int LINE_LENGTH = 10;
+
+enum class PadSide { Left, Right };
+
+class Pad : public QGraphicsItem
+{
+public:
+    static const int Type = QGraphicsItem::UserType + 1;
+
+    explicit Pad(QGraphicsItem *parent = nullptr, const PadSide pad_side = PadSide::Left);
+
+    /** @brief Get position for the cable to dock to
+     * 
+     * This method the position, where the cable starts/ends.
+     * Normally the midpoint of the pad.
+     * 
+     * @return Point in scence coordinates
+     */
+    QPoint getSceneDockPoint();
+
+    /** @brief Sets the hover state
+     * 
+     * This method set the hover state.
+     * If true, there are visual differences to indicate
+     * that the Pad is currently on hover.
+     * If false, the Pad has the default appearance.
+     * Note: This method does not sets the opservation of a hover,
+     * but the hover itself.
+     * 
+     * @param hover State of the hover
+     */
+    void setHover(bool hover);
+
+    inline PadSide getSide() const { return m_pad_side; }
+
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
+    QRectF boundingRect() const override;
+    int type() const override { return Type; }
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *) override;
+
+private:
+    bool m_hover = false;
+    const PadSide m_pad_side;
+};
+
+#endif // PAD_H

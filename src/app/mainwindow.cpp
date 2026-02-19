@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     loadAlignTools();
 
     connect(this, &MainWindow::modeChanged, panel, &Panel::setMode);
+    focus_document->createVisual(VisualType::Slider);
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +61,27 @@ void MainWindow::loadDebugMenu()
         label->setPanel(panel);
         qDebug() << "Routing Slider to Label";
         qDebug() << slider->getInterfaces().first().routeTo(&label->getInterfaces().first());
+    });
+    debug_menu->addAction("Add Test Node", this, [this]() {
+        focus_document->createVisual(VisualType::Slider);
+        qDebug() << "Added test slider node via Document";
+    });
+    debug_menu->addAction("Add Label Node", this, [this]() {
+        focus_document->createVisual(VisualType::Test); // Test creates Label
+        qDebug() << "Added test label node via Document";
+    });
+    debug_menu->addAction("Add Label Node", this, [this]() {
+        Label *test_label = new Label(this);
+        test_label->setPanel(panel, QPoint(300, 100));
+        // Find the nodeeditor from the tab widget
+        for (int i = 0; i < ui->tabWidget->count(); ++i) {
+            NodeEditor *nodeeditor = qobject_cast<NodeEditor *>(ui->tabWidget->widget(i));
+            if (nodeeditor) {
+                nodeeditor->addNode(test_label);
+                qDebug() << "Added test label node to NodeEditor";
+                break;
+            }
+        }
     });
 #endif
 }

@@ -20,9 +20,6 @@ public:
     QList<Interface> &getInterfaces() { return m_interfaces; }
     Interface *getInterface(const QString &identifier);
 
-    //Pointer to the node editor widgets. Needed for nodes to be shown in the node editor.
-    void setNodeEditor(QWidget *node_editor_widget) { m_nodeeditor = node_editor_widget; }
-
 signals:
     void changedInterfaceValue(const Interface &);
 
